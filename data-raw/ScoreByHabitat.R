@@ -1,7 +1,6 @@
 library(tidyverse)
 library(readxl)
 library(janitor)
-library(readxl)
 
 
 HabitatScores <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
