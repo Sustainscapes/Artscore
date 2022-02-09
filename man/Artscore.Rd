@@ -51,4 +51,7 @@ s = Artsum calculated as follows:
 
 m(a) = Average adjusted mean score, coded as m_a in the data
 frame
+
+A(s) = Artcore index, coded as A_s in the data frame calculated
+as follows
 }

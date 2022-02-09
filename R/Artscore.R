@@ -34,8 +34,14 @@
 #' m(a) = Average adjusted mean score, coded as m_a in the data
 #' frame
 #'
+#' A(s) = Artcore index, coded as A_s in the data frame calculated
+#' as follows
+#'
+#' \deqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
+#'
 #' @importFrom dplyr filter
 #' @export
+
 
 Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = NULL, Habitat_code = NULL){
   ## Filter by species
@@ -80,12 +86,15 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
   a_b <- sum(Temp$Bilagsart)
   s <- m*a_b
   m_a <- unique(Temp$gennemsnitlig_middelscore)
+  A_s <- 1/((1+exp(m_a))*exp(1.6*(1-m)))
+
 
 
   Artscore_result <- data.frame(m = m,
                                 a_b = a_b,
                                 s = s,
-                                m_a = m_a)
+                                m_a = m_a,
+                                A_s = A_s)
 
   return(Artscore_result)
 }
