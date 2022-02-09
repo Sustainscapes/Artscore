@@ -310,3 +310,426 @@ Subweights_Sheet3 <-  Subweights_Sheet3 %>%
   full_join(Final_Sheet3)
 
 Final_Sheet3 <- Subweights_Sheet3
+
+## Sheet4
+
+StruktureIndeksScores <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                    sheet = Sheets[4]) %>%
+  select_if(~sum(!is.na(.)) > 0) %>%
+  clean_names()
+
+Variables <- StruktureIndeksScores %>%
+  dplyr::filter(is.na(x3)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Variables = c(rep(Variables[1:12], each = 5),rep(Variables[13:14], each = 3))
+
+
+Scores <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Scores <- Scores[-1]
+
+Values <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  dplyr::select(x3:x6)
+
+colnames(Values) <- Values[1,]
+
+Values <- Values[-1,] %>% mutate_all(as.numeric) %>%
+  pivot_longer(everything(), names_to = "Habitat", values_to = "Values") %>%
+  mutate(Habitat = parse_number(Habitat)) %>%
+  arrange(Habitat)
+
+N_Habitats <- length(unique(Values$Habitat))
+
+Final_Sheet4 <- data.frame(Variables = rep(Variables, N_Habitats),
+                           Values = Values$Values,
+                           Scores = rep(Scores, N_Habitats),
+                           Habitat = Values$Habitat) %>%
+  rename(Subvariables = Variables) %>%
+  mutate(Habitat = as.character(Habitat))
+
+
+Subweights_Sheet4 <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                skip = 1, sheet = Sheets[4]) %>%
+  dplyr::select("Habitattype\r\n...8":"6410") %>%
+  drop_na() %>% pivot_longer(-`Habitattype\r\n...8`, names_to = "Habitat", values_to = "Weight") %>%
+  rename(Variables = `Habitattype\r\n...8`) %>%
+  mutate(Variables = str_remove_all(Variables, "\\r\\n")) %>%
+  mutate(Subvariables = case_when(Variables == "bar jord" ~ "Uden vegetationsdække",
+                                  Variables == "lave urter" ~ "Græs/urteveg. under 15 cm",
+                                  Variables == "middel urter" ~ "Græs/urtevegetation 15-50 cm",
+                                  Variables == "høje urter" ~ "Græs/urtevegetation over 50 cm",
+                                  Variables == "dværgbuske" ~ "Dværgbuske",
+                                  Variables == "vedplanter" ~  "Vedplanter (kronedække)",
+                                  Variables == "invasive planter" ~ "Forekomst af invasive arter",
+                                  Variables == "afvanding" ~ "Afvanding og vandindvinding",
+                                  Variables == "vandløb" ~ "Vandløb",
+                                  Variables == "kystsikring" ~ "Kystsikring",
+                                  Variables == "afgræsning" ~ "Græsning/høslæt",
+                                  Variables == "gødskning" ~ "Gødskning el. sprøjteskader",
+                                  Variables == "positive strukturer" ~  "Positive strukturer",
+                                  Variables == "negative strukturer" ~ "Negative strukturer"),
+         Variables = case_when(Variables == "Vegetationsstruktur" ~ "Vegetationsstruktur",
+                               Variables == "bar jord" ~ "Vegetationsstruktur",
+                               Variables == "lave urter" ~ "Vegetationsstruktur",
+                               Variables == "middel urter" ~ "Vegetationsstruktur",
+                               Variables == "høje urter" ~ "Vegetationsstruktur",
+                               Variables == "dværgbuske" ~ "Vegetationsstruktur",
+                               Variables == "vedplanter" ~  "Vegetationsstruktur",
+                               Variables == "invasive planter" ~ "Vegetationsstruktur",
+                               Variables == "Hydrologi" ~ "Hydrologi",
+                               Variables == "afvanding" ~ "Hydrologi",
+                               Variables == "vandløb" ~ "Hydrologi",
+                               Variables == "kystsikring" ~ "Hydrologi",
+                               Variables == "Landbrugspåvirkninger" ~ "Landbrugspåvirkninger",
+                               Variables == "afgræsning" ~ "Landbrugspåvirkninger",
+                               Variables == "gødskning" ~ "Landbrugspåvirkninger",
+                               Variables == "Naturtypekarak. strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "positive strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "negative strukturer" ~ "Naturtypekarak. strukturer"))
+
+
+Weights_Sheet4 <- Subweights_Sheet4 %>%
+  dplyr::filter(is.na(Subvariables)) %>%
+  dplyr::select(-Subvariables)
+
+Subweights_Sheet4 <-  Subweights_Sheet4 %>%
+  dplyr::filter(!is.na(Subvariables)) %>%
+  rename(Subweights = Weight) %>%
+  full_join(Weights_Sheet4) %>%
+  relocate(Subweights, .after = Weight) %>%
+  relocate(Habitat, .before = everything()) %>%
+  mutate(Habitat = as.character(Habitat)) %>%
+  full_join(Final_Sheet4)
+
+Final_Sheet4 <- Subweights_Sheet4
+
+## Sheet 5
+StruktureIndeksScores <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                    sheet = Sheets[5]) %>%
+  select_if(~sum(!is.na(.)) > 0) %>%
+  clean_names()
+
+Variables <- StruktureIndeksScores %>%
+  dplyr::filter(is.na(x3)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Variables = c(rep(Variables[1:12], each = 5),rep(Variables[13:14], each = 3))
+
+
+Scores <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Scores <- Scores[-1]
+
+Values <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  dplyr::select(x3:x5)
+
+colnames(Values) <- Values[1,]
+
+Values <- Values[-1,] %>% mutate_all(as.numeric) %>%
+  pivot_longer(everything(), names_to = "Habitat", values_to = "Values") %>%
+  mutate(Habitat = parse_number(Habitat)) %>%
+  arrange(Habitat)
+
+N_Habitats <- length(unique(Values$Habitat))
+
+Final_Sheet5 <- data.frame(Variables = rep(Variables, N_Habitats),
+                           Values = Values$Values,
+                           Scores = rep(Scores, N_Habitats),
+                           Habitat = Values$Habitat) %>%
+  rename(Subvariables = Variables) %>%
+  mutate(Habitat = as.character(Habitat))
+
+
+Subweights_Sheet5 <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                skip = 1, sheet = Sheets[5]) %>%
+  dplyr::select("Habitattype\r\n...7":"7150") %>%
+  drop_na() %>% pivot_longer(-`Habitattype\r\n...7`, names_to = "Habitat", values_to = "Weight") %>%
+  rename(Variables = `Habitattype\r\n...7`) %>%
+  mutate(Variables = str_remove_all(Variables, "\\r\\n")) %>%
+  mutate(Subvariables = case_when(Variables == "bar jord" ~ "Uden vegetationsdække",
+                                  Variables == "lave urter" ~ "Græs/urteveg. under 15 cm",
+                                  Variables == "middel urter" ~ "Græs/urtevegetation 15-50 cm",
+                                  Variables == "høje urter" ~ "Græs/urtevegetation over 50 cm",
+                                  Variables == "dværgbuske" ~ "Dværgbuske",
+                                  Variables == "vedplanter" ~  "Vedplanter (kronedække)",
+                                  Variables == "invasive planter" ~ "Forekomst af invasive arter",
+                                  Variables == "afvanding" ~ "Afvanding og vandindvinding",
+                                  Variables == "vandløb" ~ "Vandløb",
+                                  Variables == "kystsikring" ~ "Kystsikring",
+                                  Variables == "afgræsning" ~ "Græsning/høslæt",
+                                  Variables == "gødskning" ~ "Gødskning el. sprøjteskader",
+                                  Variables == "positive strukturer" ~  "Positive strukturer",
+                                  Variables == "negative strukturer" ~ "Negative strukturer"),
+         Variables = case_when(Variables == "Vegetationsstruktur" ~ "Vegetationsstruktur",
+                               Variables == "bar jord" ~ "Vegetationsstruktur",
+                               Variables == "lave urter" ~ "Vegetationsstruktur",
+                               Variables == "middel urter" ~ "Vegetationsstruktur",
+                               Variables == "høje urter" ~ "Vegetationsstruktur",
+                               Variables == "dværgbuske" ~ "Vegetationsstruktur",
+                               Variables == "vedplanter" ~  "Vegetationsstruktur",
+                               Variables == "invasive planter" ~ "Vegetationsstruktur",
+                               Variables == "hydrologi" ~ "Hydrologi",
+                               Variables == "afvanding" ~ "Hydrologi",
+                               Variables == "vandløb" ~ "Hydrologi",
+                               Variables == "kystsikring" ~ "Hydrologi",
+                               Variables == "Landbrugspåvirkninger" ~ "Landbrugspåvirkninger",
+                               Variables == "afgræsning" ~ "Landbrugspåvirkninger",
+                               Variables == "gødskning" ~ "Landbrugspåvirkninger",
+                               Variables == "Naturtypekarak. strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "positive strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "negative strukturer" ~ "Naturtypekarak. strukturer"))
+
+
+Weights_Sheet5 <- Subweights_Sheet5 %>%
+  dplyr::filter(is.na(Subvariables)) %>%
+  dplyr::select(-Subvariables)
+
+Subweights_Sheet5 <-  Subweights_Sheet5 %>%
+  dplyr::filter(!is.na(Subvariables)) %>%
+  rename(Subweights = Weight) %>%
+  full_join(Weights_Sheet5) %>%
+  relocate(Subweights, .after = Weight) %>%
+  relocate(Habitat, .before = everything()) %>%
+  mutate(Habitat = as.character(Habitat)) %>%
+  full_join(Final_Sheet5)
+
+Final_Sheet5 <- Subweights_Sheet5
+
+## Sheet 6
+StruktureIndeksScores <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                    sheet = Sheets[6]) %>%
+  select_if(~sum(!is.na(.)) > 0) %>%
+  clean_names()
+
+Variables <- StruktureIndeksScores %>%
+  dplyr::filter(is.na(x3)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Variables = c(rep(Variables[1:12], each = 5),rep(Variables[13:14], each = 3))
+
+
+Scores <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Scores <- Scores[-1]
+
+Values <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  dplyr::select(x3:x5)
+
+colnames(Values) <- Values[1,]
+
+Values <- Values[-1,] %>% mutate_all(as.numeric) %>%
+  pivot_longer(everything(), names_to = "Habitat", values_to = "Values") %>%
+  mutate(Habitat = parse_number(Habitat)) %>%
+  arrange(Habitat)
+
+N_Habitats <- length(unique(Values$Habitat))
+
+Final_Sheet6 <- data.frame(Variables = rep(Variables, N_Habitats),
+                           Values = Values$Values,
+                           Scores = rep(Scores, N_Habitats),
+                           Habitat = Values$Habitat) %>%
+  rename(Subvariables = Variables) %>%
+  mutate(Habitat = as.character(Habitat))
+
+
+Subweights_Sheet6 <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                skip = 1, sheet = Sheets[6]) %>%
+  dplyr::select("Habitattype\r\n...7":"7230") %>%
+  drop_na() %>% pivot_longer(-`Habitattype\r\n...7`, names_to = "Habitat", values_to = "Weight") %>%
+  rename(Variables = `Habitattype\r\n...7`) %>%
+  mutate(Variables = str_remove_all(Variables, "\\r\\n")) %>%
+  mutate(Subvariables = case_when(Variables == "bar jord" ~ "Uden vegetationsdække",
+                                  Variables == "lave urter" ~ "Græs/urteveg. under 15 cm",
+                                  Variables == "middel urter" ~ "Græs/urtevegetation 15-50 cm",
+                                  Variables == "høje urter" ~ "Græs/urtevegetation over 50 cm",
+                                  Variables == "dværgbuske" ~ "Dværgbuske",
+                                  Variables == "vedplanter" ~  "Vedplanter (kronedække)",
+                                  Variables == "invasive planter" ~ "Forekomst af invasive arter",
+                                  Variables == "afvanding" ~ "Afvanding og vandindvinding",
+                                  Variables == "vandløb" ~ "Vandløb",
+                                  Variables == "kystsikring" ~ "Kystsikring",
+                                  Variables == "afgræsning" ~ "Græsning/høslæt",
+                                  Variables == "gødskning" ~ "Gødskning el. sprøjteskader",
+                                  Variables == "positive strukturer" ~  "Positive strukturer",
+                                  Variables == "negative strukturer" ~ "Negative strukturer"),
+         Variables = case_when(Variables == "Vegetationsstruktur" ~ "Vegetationsstruktur",
+                               Variables == "bar jord" ~ "Vegetationsstruktur",
+                               Variables == "lave urter" ~ "Vegetationsstruktur",
+                               Variables == "middel urter" ~ "Vegetationsstruktur",
+                               Variables == "høje urter" ~ "Vegetationsstruktur",
+                               Variables == "dværgbuske" ~ "Vegetationsstruktur",
+                               Variables == "vedplanter" ~  "Vegetationsstruktur",
+                               Variables == "invasive planter" ~ "Vegetationsstruktur",
+                               Variables == "hydrologi" ~ "Hydrologi",
+                               Variables == "afvanding" ~ "Hydrologi",
+                               Variables == "vandløb" ~ "Hydrologi",
+                               Variables == "kystsikring" ~ "Hydrologi",
+                               Variables == "Landbrugspåvirkninger" ~ "Landbrugspåvirkninger",
+                               Variables == "afgræsning" ~ "Landbrugspåvirkninger",
+                               Variables == "gødskning" ~ "Landbrugspåvirkninger",
+                               Variables == "Naturtypekarak. strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "positive strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "negative strukturer" ~ "Naturtypekarak. strukturer"))
+
+
+Weights_Sheet6 <- Subweights_Sheet6 %>%
+  dplyr::filter(is.na(Subvariables)) %>%
+  dplyr::select(-Subvariables)
+
+Subweights_Sheet6 <-  Subweights_Sheet6 %>%
+  dplyr::filter(!is.na(Subvariables)) %>%
+  rename(Subweights = Weight) %>%
+  full_join(Weights_Sheet6) %>%
+  relocate(Subweights, .after = Weight) %>%
+  relocate(Habitat, .before = everything()) %>%
+  mutate(Habitat = as.character(Habitat)) %>%
+  full_join(Final_Sheet6)
+
+Final_Sheet6 <- Subweights_Sheet6
+
+
+## Sheet7
+
+StruktureIndeksScores <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                    sheet = Sheets[7]) %>%
+  select_if(~sum(!is.na(.)) > 0) %>%
+  clean_names()
+
+Variables <- StruktureIndeksScores %>%
+  dplyr::filter(is.na(x3)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Variables = c(rep(Variables[1:7], each = 5),
+              rep(Variables[8:16], each = 3),
+              rep(Variables[17], each = 5),
+              rep(Variables[18], each = 3),
+              rep(Variables[19:23], each = 5),
+              rep(Variables[24], each = 2),
+              rep(Variables[25], each = 5),
+              rep(Variables[26], each = 2),
+              rep(Variables[27], each = 5))
+
+
+Scores <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  dplyr::select(score, x2) %>%
+  dplyr::mutate(score = ifelse(is.na(score), x2, score)) %>%
+  pull(score) %>%
+  str_remove_all("\\r\\n")
+
+Scores <- Scores[-1]
+
+Values <- StruktureIndeksScores %>%
+  dplyr::filter(!is.na(x3)) %>%
+  dplyr::select(x3:x6)
+
+colnames(Values) <- Values[1,]
+
+Values <- Values[-1,] %>% mutate_all(as.numeric) %>%
+  rename(`2180` = `Klit skov (2180)`) %>%
+  mutate(`9110` = `Bøgeskov (9110-9150)`,
+         `9120` = `Bøgeskov (9110-9150)`,
+         `9130` = `Bøgeskov (9110-9150)`,
+         `9150` = `Bøgeskov (9110-9150)`,
+          `9160` = `Egeskov (9160-9190)`,
+         `9170` = `Egeskov (9160-9190)`,
+         `9190` = `Egeskov (9160-9190)`,
+         `91D0` = `Sumpskov (91E0 + 91D0)`,
+         `91E0` = `Sumpskov (91E0 + 91D0)`) %>%
+  dplyr::select(-`Bøgeskov (9110-9150)`, -`Egeskov (9160-9190)`, -`Sumpskov (91E0 + 91D0)`) %>%
+  pivot_longer(everything(), names_to = "Habitat", values_to = "Values") %>%
+#  mutate(Habitat = parse_number(Habitat)) %>%
+  arrange(Habitat)
+
+
+N_Habitats <- length(unique(Values$Habitat))
+
+Final_Sheet7 <- data.frame(Variables = rep(Variables, N_Habitats),
+                           Values = Values$Values,
+                           Scores = rep(Scores, N_Habitats),
+                           Habitat = Values$Habitat) %>%
+  rename(Subvariables = Variables) %>%
+  mutate(Habitat = as.character(Habitat))
+
+
+Subweights_Sheet7 <- read_excel("Habitattypernes scoringer og vægtninger_lysåben og skov.xlsx",
+                                skip = 1, sheet = Sheets[7]) %>%
+  dplyr::select("Habitattype\r\n...8":"91E0") %>%
+  mutate(`9110` = `Bøgeskov (9110-9150)...9`,
+         `9120` = `Bøgeskov (9110-9150)...9`,
+         `9130` = `Bøgeskov (9110-9150)...9`,
+         `9150` = `Bøgeskov (9110-9150)...9`,
+         `9160` = `Egeskov (9160-9170)`,
+         `9170` = `Egeskov (9160-9170)`,
+         `9190` = `Egeskov (9160-9170)`) %>%
+  dplyr::select(-`Bøgeskov (9110-9150)...9`, -`Egeskov (9160-9170)`) %>%
+  drop_na() %>% pivot_longer(-`Habitattype\r\n...8`, names_to = "Habitat", values_to = "Weight") %>%
+  rename(Variables = `Habitattype\r\n...8`) %>%
+  mutate(Variables = str_remove_all(Variables, "\\r\\n")) %>%
+## Fix from here
+
+    mutate(Subvariables = case_when(Variables == "bar jord" ~ "Uden vegetationsdække",
+                                  Variables == "lave urter" ~ "Græs/urteveg. under 15 cm",
+                                  Variables == "middel urter" ~ "Græs/urtevegetation 15-50 cm",
+                                  Variables == "høje urter" ~ "Græs/urtevegetation over 50 cm",
+                                  Variables == "dværgbuske" ~ "Dværgbuske",
+                                  Variables == "vedplanter" ~  "Vedplanter (kronedække)",
+                                  Variables == "invasive planter" ~ "Forekomst af invasive arter",
+                                  Variables == "afvanding" ~ "Afvanding og vandindvinding",
+                                  Variables == "vandløb" ~ "Vandløb",
+                                  Variables == "kystsikring" ~ "Kystsikring",
+                                  Variables == "afgræsning" ~ "Græsning/høslæt",
+                                  Variables == "gødskning" ~ "Gødskning el. sprøjteskader",
+                                  Variables == "positive strukturer" ~  "Positive strukturer",
+                                  Variables == "negative strukturer" ~ "Negative strukturer"),
+         Variables = case_when(Variables == "Vegetationsstruktur" ~ "Vegetationsstruktur",
+                               Variables == "bar jord" ~ "Vegetationsstruktur",
+                               Variables == "lave urter" ~ "Vegetationsstruktur",
+                               Variables == "middel urter" ~ "Vegetationsstruktur",
+                               Variables == "høje urter" ~ "Vegetationsstruktur",
+                               Variables == "dværgbuske" ~ "Vegetationsstruktur",
+                               Variables == "vedplanter" ~  "Vegetationsstruktur",
+                               Variables == "invasive planter" ~ "Vegetationsstruktur",
+                               Variables == "hydrologi" ~ "Hydrologi",
+                               Variables == "afvanding" ~ "Hydrologi",
+                               Variables == "vandløb" ~ "Hydrologi",
+                               Variables == "kystsikring" ~ "Hydrologi",
+                               Variables == "Landbrugspåvirkninger" ~ "Landbrugspåvirkninger",
+                               Variables == "afgræsning" ~ "Landbrugspåvirkninger",
+                               Variables == "gødskning" ~ "Landbrugspåvirkninger",
+                               Variables == "Naturtypekarak. strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "positive strukturer" ~  "Naturtypekarak. strukturer",
+                               Variables == "negative strukturer" ~ "Naturtypekarak. strukturer"))
+
+
+Weights_Sheet6 <- Subweights_Sheet6 %>%
+  dplyr::filter(is.na(Subvariables)) %>%
+  dplyr::select(-Subvariables)
+
+Subweights_Sheet6 <-  Subweights_Sheet6 %>%
+  dplyr::filter(!is.na(Subvariables)) %>%
+  rename(Subweights = Weight) %>%
+  full_join(Weights_Sheet6) %>%
+  relocate(Subweights, .after = Weight) %>%
+  relocate(Habitat, .before = everything()) %>%
+  mutate(Habitat = as.character(Habitat)) %>%
+  full_join(Final_Sheet6)
+
+Final_Sheet6 <- Subweights_Sheet6

@@ -13,3 +13,6 @@ Depends:
     R (>= 2.10)
 URL: https://github.com/Sustainscapes/Artscore
 BugReports: https://github.com/Sustainscapes/Artscore/issues
+LazyData: true
+Imports: 
+    magrittr
