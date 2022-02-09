@@ -17,6 +17,15 @@
 #'
 #' @return a data frame with the intermediate calculations and the Artscore
 #'
+#' @example
+#'
+#' data("Habitat_List")
+#' data("Species_List")
+#'
+#' set.seed(2022)
+#'
+#' Artscore(Common_name = sample(Species_List$Danish_name, 10), Habitat_code = Habitat_List$Code[10])
+#'
 #' @details
 #'
 #' The dataframe returns the following calculated values
@@ -37,10 +46,19 @@
 #' A(s) = Artcore index, coded as A_s in the data frame calculated
 #' as follows
 #'
-#' \eqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
+#' \deqn{A(s) = \frac{1}{(1+e^{m(a)} \times e^{1.60(1-m)})}}
 #'
 #' a(t) = number of plant species in the sample field
 #' (without mosses etc.), coded as a_t in the data frame
+#'
+#' n(a) = average number of species in the habitat type
+#' d = Diversity parameter calculated as follows :
+#'
+#' \deqn{D}{d = 0.8 \times  m(a) \times n(a)}
+#'
+#' A(d) = Artsdiversitetsindex calculated as follows:
+#'
+#'  \deqn{A_{d}}{A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))}
 #'
 #' @importFrom dplyr filter
 #' @export
@@ -92,6 +110,11 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
   m_a <- unique(Temp$gennemsnitlig_middelscore)
   A_s <- 1/((1+exp(m_a))*exp(1.6*(1-m)))
   a_t <- nrow(Temp)
+  n_a <- unique(Temp$gennemsnitligt_artsantal)
+  d <- 0.8*m_a*n_a
+  A_d <- (a_b/a_t)*(1-(1/exp(s/d)))
+
+
 
 
 
@@ -100,7 +123,9 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
                                 s = s,
                                 m_a = m_a,
                                 A_s = A_s,
-                                a_t = a_t)
+                                a_t = a_t,
+                                n_a = n_a,
+                                A_d = A_d)
 
   return(Artscore_result)
 }

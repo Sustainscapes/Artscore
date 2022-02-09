@@ -55,8 +55,17 @@ frame
 A(s) = Artcore index, coded as A_s in the data frame calculated
 as follows
 
-\eqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
+\deqn{A(s) = \frac{1}{(1+e^{m(a)} \times e^{1.60(1-m)})}}
 
 a(t) = number of plant species in the sample field
 (without mosses etc.), coded as a_t in the data frame
+
+n(a) = average number of species in the habitat type
+d = Diversity parameter calculated as follows :
+
+\deqn{D}{d = 0.8 \times  m(a) \times n(a)}
+
+A(d) = Artsdiversitetsindex calculated as follows:
+
+\deqn{A_{d}}{A_{d}}
 }
