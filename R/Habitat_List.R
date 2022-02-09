@@ -9,4 +9,4 @@
 #'   \item{habitat_name}{Danish name of the habitat}
 #'   ...
 #' }
-"Species_List"
+"Habitat_List"

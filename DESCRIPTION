@@ -1,16 +1,17 @@
 Package: Artscore
-Title: What the Package Does (One Line, Title Case)
+Title: Calculates Artscore, Strukturindeks and Naturtilstandindeks
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Derek", "Corcoran", "derek.corcoran@bio.au.dk", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-0248-6230"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends: 
-    R (>= 2.10)
+    R (>= 2.10),
+    dplyr
 URL: https://github.com/Sustainscapes/Artscore
 BugReports: https://github.com/Sustainscapes/Artscore/issues
 LazyData: true

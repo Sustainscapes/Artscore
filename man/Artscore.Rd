@@ -54,4 +54,6 @@ frame
 
 A(s) = Artcore index, coded as A_s in the data frame calculated
 as follows
+
+\deqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
 }

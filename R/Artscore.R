@@ -45,6 +45,7 @@
 
 Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = NULL, Habitat_code = NULL){
   ## Filter by species
+  Scientific_name <- Danish_name <- habitat_name <- habitatnaturtype <- NULL
   if(!is.null(ScientificName) & length(ScientificName) >=1){
     message("Using scientific names for filtering")
     Temp <- ScoreByHabitat %>%
