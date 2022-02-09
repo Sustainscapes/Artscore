@@ -48,4 +48,7 @@ frame.
 s = Artsum calculated as follows:
 
 \deqn{s = m \times a(b)}
+
+m(a) = Average adjusted mean score, coded as m_a in the data
+frame
 }

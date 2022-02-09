@@ -31,6 +31,9 @@
 #'
 #' \deqn{s = m \times a(b)}
 #'
+#' m(a) = Average adjusted mean score, coded as m_a in the data
+#' frame
+#'
 #' @importFrom dplyr filter
 #' @export
 
@@ -76,10 +79,13 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
   m <- mean(Temp$Artscore)
   a_b <- sum(Temp$Bilagsart)
   s <- m*a_b
+  m_a <- unique(Temp$gennemsnitlig_middelscore)
+
 
   Artscore_result <- data.frame(m = m,
                                 a_b = a_b,
-                                s = s)
+                                s = s,
+                                m_a = m_a)
 
-  return(Temp)
+  return(Artscore_result)
 }
