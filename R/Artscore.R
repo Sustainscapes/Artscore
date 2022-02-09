@@ -60,6 +60,8 @@
 #'
 #'  \deqn{A_{d}}{A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))}
 #'
+#' Artsindex = Species index (weighting of species score and species diversity index)
+#'
 #' @importFrom dplyr filter
 #' @export
 
@@ -69,11 +71,11 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
   Scientific_name <- Danish_name <- habitat_name <- habitatnaturtype <- NULL
   if(!is.null(ScientificName) & length(ScientificName) >=1){
     message("Using scientific names for filtering")
-    Temp <- ScoreByHabitat %>%
+    Temp <- ScoreByHabitat[[1]] %>%
       dplyr::filter(Scientific_name %in% ScientificName)
   } else if(!is.null(Common_name) & length(Common_name) >= 1){
     message("Using common names for filtering")
-    Temp <- ScoreByHabitat %>%
+    Temp <- ScoreByHabitat[[1]] %>%
       dplyr::filter(Danish_name %in% Common_name)
   } else if(is.null(ScientificName) & is.null(Common_name)){
     stop("Provide a species list")
@@ -108,12 +110,12 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
   a_b <- sum(Temp$Bilagsart)
   s <- m*a_b
   m_a <- unique(Temp$gennemsnitlig_middelscore)
-  A_s <- 1/((1+exp(m_a))*exp(1.6*(1-m)))
+  A_s <- 1/(1+exp(m_a)*exp(1.6*(1-m)))
   a_t <- nrow(Temp)
   n_a <- unique(Temp$gennemsnitligt_artsantal)
   d <- 0.8*m_a*n_a
   A_d <- (a_b/a_t)*(1-(1/exp(s/d)))
-
+  Artsindex <- (0.75*A_s) + (0.25*A_d)
 
 
 
@@ -125,7 +127,8 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
                                 A_s = A_s,
                                 a_t = a_t,
                                 n_a = n_a,
-                                A_d = A_d)
+                                A_d = A_d,
+                                Artsindex = Artsindex)
 
   return(Artscore_result)
 }

@@ -2,5 +2,6 @@
 
 export("%>%")
 export(Artscore)
+export(Strukturindeks)
 importFrom(dplyr,filter)
 importFrom(magrittr,"%>%")

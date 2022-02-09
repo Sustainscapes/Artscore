@@ -68,6 +68,8 @@ d = Diversity parameter calculated as follows :
 A(d) = Artsdiversitetsindex calculated as follows:
 
 \deqn{A_{d}}{A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))}
+
+Artsindex = Species index (weighting of species score and species diversity index)
 }
 \examples{
 
