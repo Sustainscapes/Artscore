@@ -17,7 +17,7 @@
 #'
 #' @return a data frame with the intermediate calculations and the Artscore
 #'
-#' @example
+#' @examples
 #'
 #' data("Habitat_List")
 #' data("Species_List")

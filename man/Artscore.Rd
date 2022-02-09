@@ -67,5 +67,15 @@ d = Diversity parameter calculated as follows :
 
 A(d) = Artsdiversitetsindex calculated as follows:
 
-\deqn{A_{d}}{A_{d}}
+\deqn{A_{d}}{A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))}
+}
+\examples{
+
+data("Habitat_List")
+data("Species_List")
+
+set.seed(2022)
+
+Artscore(Common_name = sample(Species_List$Danish_name, 10), Habitat_code = Habitat_List$Code[10])
+
 }
