@@ -29,7 +29,7 @@
 #'
 #' s = Artsum calculated as follows:
 #'
-#' \deqn{s = m \times a(b)}
+#' \eqn{s = m \times a(b)}
 #'
 #' m(a) = Average adjusted mean score, coded as m_a in the data
 #' frame
@@ -37,7 +37,10 @@
 #' A(s) = Artcore index, coded as A_s in the data frame calculated
 #' as follows
 #'
-#' \deqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
+#' \eqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
+#'
+#' a(t) = number of plant species in the sample field
+#' (without mosses etc.), coded as a_t in the data frame
 #'
 #' @importFrom dplyr filter
 #' @export
@@ -88,6 +91,7 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
   s <- m*a_b
   m_a <- unique(Temp$gennemsnitlig_middelscore)
   A_s <- 1/((1+exp(m_a))*exp(1.6*(1-m)))
+  a_t <- nrow(Temp)
 
 
 
@@ -95,7 +99,8 @@ Artscore <- function(ScientificName = NULL, Common_name = NULL, Habitat_name = N
                                 a_b = a_b,
                                 s = s,
                                 m_a = m_a,
-                                A_s = A_s)
+                                A_s = A_s,
+                                a_t = a_t)
 
   return(Artscore_result)
 }

@@ -2,7 +2,8 @@ Package: Artscore
 Title: Calculates Artscore, Strukturindeks and Naturtilstandindeks
 Version: 0.0.0.9000
 Authors@R: 
-    person("Derek", "Corcoran", "derek.corcoran@bio.au.dk", role = c("aut", "cre"),
+    person(given = "Derek", family = "Corcoran", email = "derek.corcoran@bio.au.dk", 
+    role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0248-6230"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE

@@ -47,7 +47,7 @@ frame.
 
 s = Artsum calculated as follows:
 
-\deqn{s = m \times a(b)}
+\eqn{s = m \times a(b)}
 
 m(a) = Average adjusted mean score, coded as m_a in the data
 frame
@@ -55,5 +55,8 @@ frame
 A(s) = Artcore index, coded as A_s in the data frame calculated
 as follows
 
-\deqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
+\eqn{A(s) = \frac{1}{(1+e^{m(a))} \times e^{1.60(1-m)}}}
+
+a(t) = number of plant species in the sample field
+(without mosses etc.), coded as a_t in the data frame
 }
