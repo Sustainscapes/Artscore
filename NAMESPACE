@@ -3,6 +3,7 @@
 export("%>%")
 export(Artscore)
 export(GetWeights)
+export(Naturtilstandindeks)
 export(Strukturindeks)
 importFrom(dplyr,filter)
 importFrom(magrittr,"%>%")
