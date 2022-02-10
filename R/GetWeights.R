@@ -20,13 +20,13 @@
 #' @export
 
 GetWeights <- function(Habitat_name = NULL, Habitat_code = NULL){
-  Subvariables <- habitatnaturtype <- habitat_name <- Habitat_code <- NULL
+  Subvariables <- habitatnaturtype <- habitat_name <- NULL
 
   if(!is.null(Habitat_name) & length(Habitat_name) == 1){
     message(paste("Using habitat name for filtering, habitat =", Habitat_name))
     Temp <- ScoreByHabitat[[2]] %>%
       dplyr::filter(habitat_name == Habitat_name)
-  } else if(!is.null(Habitat_code) & length(Habitat_code) == 1){
+  } else if(!is.null(Habitat_code) & length(Habitat_code) > 0){
     message(paste("Using habitat code for filtering, habitat =", Habitat_code))
     Temp <- ScoreByHabitat[[2]] %>%
       dplyr::filter(habitatnaturtype == Habitat_code)
